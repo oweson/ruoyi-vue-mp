@@ -1,13 +1,14 @@
 package com.ruoyi.system.service.impl;
 
 import cn.hutool.core.lang.Validator;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.entity.SysRole;
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.exception.CustomException;
+import com.ruoyi.common.utils.PageUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.system.domain.SysRoleDept;
 import com.ruoyi.system.domain.SysRoleMenu;
@@ -40,6 +41,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Autowired
     private SysRoleDeptMapper roleDeptMapper;
 
+    @Override
+    @DataScope(deptAlias = "d")
+    public TableDataInfo<SysRole> selectPageRoleList(SysRole role) {
+        return PageUtils.buildDataInfo(baseMapper.selectPageRoleList(PageUtils.buildPage(), role));
+    }
+
     /**
      * 根据条件分页查询角色数据
      *
@@ -49,20 +56,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     @DataScope(deptAlias = "d")
     public List<SysRole> selectRoleList(SysRole role) {
-        Map<String, Object> params = role.getParams();
-        Object dataScope = params.get("dataScope");
-        return list(new LambdaQueryWrapper<SysRole>()
-                .like(StrUtil.isNotBlank(role.getRoleName()), SysRole::getRoleName, role.getRoleName())
-                .eq(StrUtil.isNotBlank(role.getStatus()), SysRole::getStatus, role.getStatus())
-                .like(StrUtil.isNotBlank(role.getRoleKey()), SysRole::getRoleKey, role.getRoleKey())
-                .apply(Validator.isNotEmpty(params.get("beginTime")),
-                        "date_format(create_time,'%y%m%d') >= date_format({0},'%y%m%d')",
-                        params.get("beginTime"))
-                .apply(Validator.isNotEmpty(params.get("endTime")),
-                        "date_format(create_time,'%y%m%d') <= date_format({0},'%y%m%d')",
-                        params.get("endTime"))
-                .apply(dataScope != null, dataScope != null ? dataScope.toString() : null)
-                .orderByAsc(SysRole::getRoleSort));
+        return baseMapper.selectRoleList(role);
     }
 
     /**

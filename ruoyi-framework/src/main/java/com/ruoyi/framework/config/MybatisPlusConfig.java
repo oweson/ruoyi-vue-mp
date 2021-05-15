@@ -6,12 +6,20 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.ruoyi.framework.mybatisplus.CreateAndUpdateMetaObjectHandler;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * mybatis-plus配置类
+ *
+ * @author Lion Li
+ */
 @EnableTransactionManagement(proxyTargetClass = true)
 @Configuration
+// 指定要扫描的Mapper类的包的路径
+@MapperScan("${mybatis-plus.mapperPackage}")
 public class MybatisPlusConfig {
 
 	@Bean

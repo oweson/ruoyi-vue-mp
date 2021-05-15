@@ -14,7 +14,12 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.TimeUnit;
 
-@EnableFeignClients("com.ruoyi.**.feign")
+/**
+ * openfeign配置类
+ *
+ * @author Lion Li
+ */
+@EnableFeignClients("${feign.package}")
 @Configuration
 @ConditionalOnClass(Feign.class)
 @AutoConfigureBefore(FeignAutoConfiguration.class)

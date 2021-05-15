@@ -48,15 +48,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     @Override
     @DataScope(deptAlias = "d")
     public List<SysDept> selectDeptList(SysDept dept) {
-        Object dataScope = dept.getParams().get("dataScope");
-        return list(new LambdaQueryWrapper<SysDept>()
-                .eq(dept.getParentId() != null && dept.getParentId() != 0,
-                        SysDept::getParentId, dept.getParentId())
-                .like(StrUtil.isNotBlank(dept.getDeptName()), SysDept::getDeptName, dept.getDeptName())
-                .eq(StrUtil.isNotBlank(dept.getStatus()), SysDept::getStatus, dept.getStatus())
-                .apply(dataScope != null, dataScope != null ? dataScope.toString() : null)
-                .orderByAsc(SysDept::getParentId)
-                .orderByAsc(SysDept::getOrderNum));
+        return baseMapper.selectDeptList(dept);
     }
 
     /**
@@ -249,7 +241,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         List<SysDept> children = list(new LambdaQueryWrapper<SysDept>()
                 .apply("find_in_set({0},ancestors)",deptId));
         for (SysDept child : children) {
-            child.setAncestors(child.getAncestors().replace(oldAncestors, newAncestors));
+            child.setAncestors(child.getAncestors().replaceFirst(oldAncestors, newAncestors));
         }
         if (children.size() > 0) {
             updateBatchById(children);
