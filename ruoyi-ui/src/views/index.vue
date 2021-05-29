@@ -80,9 +80,41 @@
             <span>更新日志</span>
           </div>
           <el-collapse accordion>
+            <el-collapse-item title="v2.2.0 - 2021-5-25">
+              <ol>
+                <li>同步升级 RuoYi-Vue 3.5.0</li>
+                <li>add 增加验证码开关</li>
+                <li>add 新增IE浏览器版本过低提示页面</li>
+                <li>update 升级druid到最新版本v1.2.6</li>
+                <li>update 升级fastjson到最新版1.2.76</li>
+                <li>update 修改bo加入判断是否设置必填再加载必填注解</li>
+                <li>update 生成vue模板导出按钮点击后添加遮罩</li>
+                <li>update Redis设置HashKey序列化</li>
+                <li>update 优化Redis序列化配置</li>
+                <li>fix 修复代码生成器中表字段取消必填无法更新问题</li>
+              </ol>
+            </el-collapse-item>
+            <el-collapse-item title="v2.1.2 - 2021-5-21">
+              <ol>
+                <li>update springboot 升级 2.3.11</li>
+                <li>update mybatis-plus 升级 3.4.3 分页Plus对象适配更新</li>
+                <li>update 验证码生成更新为无符号整数计算</li>
+                <li>update 请求响应对象 与 分页对象 结构修改 适配接口文档配置</li>
+                <li>update swagger增加请求前缀</li>
+              </ol>
+            </el-collapse-item>
+            <el-collapse-item title="v2.1.1 - 2021-5-19">
+              <ol>
+                <li>update 配置统一提取为 properties 配置类</li>
+                <li>update 分页工具 删除过期方法</li>
+                <li>update admin 实时监控日志 改为保留一天</li>
+                <li>fix 修复swagger开关无法控制关闭问题</li>
+                <li>fix maven install 异常</li>
+              </ol>
+            </el-collapse-item>
             <el-collapse-item title="v2.1.0 - 2021-5-17">
               <ol>
-                <li>update swagger升级3.0.2</li>
+                <li>update knife4j升级3.0.2</li>
                 <li>update 增强分页工具兼容性</li>
                 <li>update 通用Service接口 增加自定义vo转换函数</li>
                 <li>remove 移除ruoyi自带服务监控(Admin已全部包含)</li>
@@ -148,7 +180,7 @@ export default {
   data() {
     return {
       // 版本号
-      version: "2.1.0",
+      version: "2.2.0",
     };
   },
   methods: {
