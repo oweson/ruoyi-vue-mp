@@ -3,6 +3,7 @@ package com.ruoyi.framework.aspectj;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.ruoyi.common.annotation.DataScope;
+import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
@@ -68,6 +69,7 @@ public class DataScopeAspect
     @Before("dataScopePointCut()")
     public void doBefore(JoinPoint point) throws Throwable
     {
+		clearDataScope(point);
         handleDataScope(point);
     }
 
@@ -144,18 +146,8 @@ public class DataScopeAspect
 
         if (StrUtil.isNotBlank(sqlString.toString()))
         {
-            Object params = joinPoint.getArgs()[0];
-            if (Validator.isNotNull(params))
-            {
-                try {
-                    Method getParams = params.getClass().getDeclaredMethod("getParams", null);
-                    Map<String, Object> invoke = (Map<String, Object>) getParams.invoke(params, null);
-                    invoke.put(DATA_SCOPE, " AND (" + sqlString.substring(4) + ")");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+			putDataScope(joinPoint, "AND (" + sqlString.substring(4) + ")");
+		}
     }
 
     /**
@@ -173,4 +165,35 @@ public class DataScopeAspect
         }
         return null;
     }
+
+	/**
+	 * 拼接权限sql前先清空params.dataScope参数防止注入
+	 */
+	private void clearDataScope(final JoinPoint joinPoint)
+	{
+		Object params = joinPoint.getArgs()[0];
+		if (Validator.isNotNull(params))
+		{
+			putDataScope(joinPoint, "");
+		}
+	}
+
+	private static void putDataScope(JoinPoint joinPoint, String sql) {
+		Object params = joinPoint.getArgs()[0];
+		if (Validator.isNotNull(params))
+		{
+			if(params instanceof BaseEntity) {
+				BaseEntity baseEntity = (BaseEntity) params;
+				baseEntity.getParams().put(DATA_SCOPE, sql);
+			} else {
+				try {
+					Method getParams = params.getClass().getDeclaredMethod("getParams", null);
+					Map<String, Object> invoke = (Map<String, Object>) getParams.invoke(params, null);
+					invoke.put(DATA_SCOPE, sql);
+				} catch (Exception e) {
+					// 方法未找到 不处理
+				}
+			}
+		}
+	}
 }
