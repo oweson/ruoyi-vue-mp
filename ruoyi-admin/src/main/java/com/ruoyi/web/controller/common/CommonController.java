@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,13 +52,13 @@ public class CommonController
             }
             String realFileName = System.currentTimeMillis() + fileName.substring(fileName.indexOf("_") + 1);
             String filePath = RuoYiConfig.getDownloadPath() + fileName;
-
+			File file = new File(filePath);
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
             FileUtils.setAttachmentResponseHeader(response, realFileName);
-            FileUtils.writeBytes(filePath, response.getOutputStream());
+			FileUtils.writeToStream(file, response.getOutputStream());
             if (delete)
             {
-                FileUtils.deleteFile(filePath);
+				FileUtils.del(file);
             }
         }
         catch (Exception e)
@@ -110,8 +111,9 @@ public class CommonController
             // 下载名称
             String downloadName = StrUtil.subAfter(downloadPath, "/",true);
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+			File file = new File(downloadPath);
             FileUtils.setAttachmentResponseHeader(response, downloadName);
-            FileUtils.writeBytes(downloadPath, response.getOutputStream());
+            FileUtils.writeToStream(file, response.getOutputStream());
         }
         catch (Exception e)
         {

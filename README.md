@@ -1,7 +1,13 @@
 ## 平台简介
 [![码云Gitee](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus/badge/star.svg?theme=blue)](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus)
+[![GitHub](https://img.shields.io/github/stars/JavaLionLi/RuoYi-Vue-Plus.svg?style=social&label=Stars)](https://github.com/JavaLionLi/RuoYi-Vue-Plus)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus/blob/master/LICENSE)
 [![使用IntelliJ IDEA开发维护](https://img.shields.io/badge/IntelliJ%20IDEA-提供支持-blue.svg)](https://www.jetbrains.com/?from=RuoYi-Vue-Plus)
+<br>
+[![RuoYi-Vue-Plus](https://img.shields.io/badge/RuoYi_Vue_Plus-2.4.0-success.svg)](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.4-blue.svg)]()
+[![JDK-8+](https://img.shields.io/badge/JDK-8+-green.svg)]()
+[![JDK-11](https://img.shields.io/badge/JDK-11-green.svg)]()
 
 基于 RuoYi-Vue 集成 Mybatis-Plus Lombok Hutool 等便捷开发工具 适配重写相关业务 便于开发 定期与 RuoYi-Vue 同步
 * 前端开发框架 Vue、Element UI
@@ -16,13 +22,43 @@
 * 监控框架 spring-boot-admin 全方位服务监控
 * 校验框架 validation 增强接口安全性 严谨性
 * 文档框架 knife4j 美化接口文档
+* 序列化框架 统一使用 jackson 高效可靠
 * 代码生成器 一键生成前后端代码
+* 多数据源框架 dynamic-datasource 支持主从与多种类数据库异构
+* Redis客户端 采用 Redisson 性能更强
+* 分布式锁 Lock4j 注解锁、工具锁 多种多样
 
 ## 参考文档
-[参考文档 Wiki](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus/wikis/pages)
+
+使用框架前请仔细阅读文档重点注意事项
+<br>
+>[初始化项目 必看](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus/wikis/关于初始化项目?sort_id=4164117)
+> 
+>[参考文档 Wiki](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus/wikis/pages)
+
+## 提问四部曲
+### 一、查阅wiki
+优先在`wiki->重点事项`，查找是否有相关问题及解决方案，尤其是框架更新后产生的问题，多会在wiki中提及
+
+> [参考文档 Wiki](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus/wikis/pages)
+
+### 二、借助issues
+尝试issues中搜索问题关键字（记得选择已完成），看看是否有其他人提出相同问题
+- `如果有`那么依据评论中的解决方案自行尝试解决
+- `如果没有`那么提交一个新的issues描述清楚你的问题，需要包含以下内容（优质的issues，能够帮助作者更高效的帮你解决问题）：
+    - 出现问题的模块或功能或类，总之你要说清楚在哪出的问题
+    - 描述产生问题的相关操作流程，以便复现快速解决
+    - 报错的日志截图，一定是截图，不要复制一堆报错的文本
+> [issues](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus/issues)
+
+### 三、百度
+大家都懂，不多描述，将关键的报错信息CC->CV到百度中看看大佬们怎么解决的
+> [百度](http://www.baidu.com)
+
+### 四、加群
+以上三点已经能解决大家绝大部分问题了，如果还有问题没能通过这几种方式解决，那么加群，大家一起在群里探讨一下
 
 ## 修改RuoYi功能
-
 ### 依赖改动
 
 * ORM框架 使用 Mybatis-Plus 简化CRUD (不支持主子表)
@@ -34,7 +70,10 @@
 * 集成 Feign 接口化管理 Http 请求(如三方请求 支付,短信,推送等)
 * 移除 自带服务监控 改为 spring-boot-admin 全方位监控
 * 增加 demo 模块示例(给不会增加模块的小伙伴做参考)
-* 增加 redisson 支持分布式锁 功能更强大
+* 增加 redisson 高性能 Redis 客户端
+* 移除 fastjson 统一使用 jackson 序列化
+* 集成 dynamic-datasource 多数据源(默认支持MySQL,其他种类需自行适配)
+* 集成 Lock4j 实现分布式 注解锁、工具锁 多种多样
 
 ### 代码改动
 
@@ -52,12 +91,12 @@
 ### 其他
 
 * 同步升级 RuoYi-Vue 3.5.0
+* GitHub 地址 [RuoYi-Vue-Plus-github](https://github.com/JavaLionLi/RuoYi-Vue-Plus)
 * 单模块 fast 分支 [RuoYi-Vue-Plus-fast](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus/tree/fast/)
 * Oracle 模块 oracle 分支 [RuoYi-Vue-Plus-oracle](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus/tree/oracle/)
 
-## 关注作者(扫码请备注: "加群")
-
-![作者图片](https://images.gitee.com/uploads/images/2021/0508/235345_5503356a_1766278.jpeg)
+## 扫码加群 一起交流
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0625/160026_11d949aa_1766278.jpeg "07f7121fab14e57e03e5f6a35eff6ce.jpg")
 
 ## 捐献作者
 作者为兼职做开源,平时还需要工作,如果帮到了您可以请作者吃个盒饭  
