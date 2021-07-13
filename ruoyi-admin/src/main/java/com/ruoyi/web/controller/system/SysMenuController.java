@@ -1,8 +1,7 @@
 package com.ruoyi.web.controller.system;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.lang.Validator;
 import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -98,8 +97,7 @@ public class SysMenuController extends BaseController
         {
             return AjaxResult.error("新增菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
         }
-        else if (UserConstants.YES_FRAME.equals(menu.getIsFrame())
-                && !StrUtil.startWithAny(menu.getPath(), Constants.HTTP, Constants.HTTPS))
+        else if (UserConstants.YES_FRAME.equals(menu.getIsFrame()) && !Validator.isUrl(menu.getPath()))
         {
             return AjaxResult.error("新增菜单'" + menu.getMenuName() + "'失败，地址必须以http(s)://开头");
         }
@@ -119,8 +117,7 @@ public class SysMenuController extends BaseController
         {
             return AjaxResult.error("修改菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
         }
-        else if (UserConstants.YES_FRAME.equals(menu.getIsFrame())
-                && !StrUtil.startWithAny(menu.getPath(), Constants.HTTP, Constants.HTTPS))
+        else if (UserConstants.YES_FRAME.equals(menu.getIsFrame()) && !Validator.isUrl(menu.getPath()))
         {
             return AjaxResult.error("修改菜单'" + menu.getMenuName() + "'失败，地址必须以http(s)://开头");
         }
