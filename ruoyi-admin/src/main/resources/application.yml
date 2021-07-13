@@ -12,7 +12,6 @@ ruoyi:
   profile: ./ruoyi/uploadPath
   # 获取ip地址开关
   addressEnabled: true
-
 captcha:
   # 验证码类型 math 数组计算 char 字符验证
   type: math
@@ -26,7 +25,7 @@ captcha:
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为8080
-  port: 8080
+  port: 2023
   servlet:
     # 应用的访问路径
     context-path: /
