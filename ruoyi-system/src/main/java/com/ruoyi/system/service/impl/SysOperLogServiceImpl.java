@@ -23,7 +23,7 @@ import java.util.Map;
  * @author ruoyi
  */
 @Service
-public class SysOperLogServiceImpl extends ServicePlusImpl<SysOperLogMapper, SysOperLog> implements ISysOperLogService {
+public class SysOperLogServiceImpl extends ServicePlusImpl<SysOperLogMapper, SysOperLog, SysOperLog> implements ISysOperLogService {
 
     @Override
     public TableDataInfo<SysOperLog> selectPageOperLogList(SysOperLog operLog) {

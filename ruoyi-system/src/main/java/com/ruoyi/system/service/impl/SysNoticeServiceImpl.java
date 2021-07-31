@@ -19,7 +19,7 @@ import java.util.List;
  * @author ruoyi
  */
 @Service
-public class SysNoticeServiceImpl extends ServicePlusImpl<SysNoticeMapper, SysNotice> implements ISysNoticeService {
+public class SysNoticeServiceImpl extends ServicePlusImpl<SysNoticeMapper, SysNotice, SysNotice> implements ISysNoticeService {
 
     @Override
     public TableDataInfo<SysNotice> selectPageNoticeList(SysNotice notice) {

@@ -31,7 +31,7 @@ import java.util.Map;
  * @author ruoyi
  */
 @Service
-public class SysDictTypeServiceImpl extends ServicePlusImpl<SysDictTypeMapper, SysDictType> implements ISysDictTypeService {
+public class SysDictTypeServiceImpl extends ServicePlusImpl<SysDictTypeMapper, SysDictType, SysDictType> implements ISysDictTypeService {
 
 	@Autowired
 	private SysDictDataMapper dictDataMapper;

@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * @author ruoyi
  */
 @Service
-public class SysDeptServiceImpl extends ServicePlusImpl<SysDeptMapper, SysDept> implements ISysDeptService {
+public class SysDeptServiceImpl extends ServicePlusImpl<SysDeptMapper, SysDept, SysDept> implements ISysDeptService {
 
     @Autowired
     private SysRoleMapper roleMapper;

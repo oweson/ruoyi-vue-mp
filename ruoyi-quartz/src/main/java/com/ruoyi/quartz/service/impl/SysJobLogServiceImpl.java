@@ -21,7 +21,7 @@ import java.util.Map;
  * @author ruoyi
  */
 @Service
-public class SysJobLogServiceImpl extends ServicePlusImpl<SysJobLogMapper, SysJobLog> implements ISysJobLogService {
+public class SysJobLogServiceImpl extends ServicePlusImpl<SysJobLogMapper, SysJobLog, SysJobLog> implements ISysJobLogService {
 
     @Override
     public TableDataInfo<SysJobLog> selectPageJobLogList(SysJobLog jobLog) {

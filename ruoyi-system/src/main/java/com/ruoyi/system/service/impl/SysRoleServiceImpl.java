@@ -30,7 +30,7 @@ import java.util.*;
  * @author ruoyi
  */
 @Service
-public class SysRoleServiceImpl extends ServicePlusImpl<SysRoleMapper, SysRole> implements ISysRoleService {
+public class SysRoleServiceImpl extends ServicePlusImpl<SysRoleMapper, SysRole, SysRole> implements ISysRoleService {
 
     @Autowired
     private SysRoleMenuMapper roleMenuMapper;
@@ -364,13 +364,17 @@ public class SysRoleServiceImpl extends ServicePlusImpl<SysRoleMapper, SysRole> 
     @Override
     public int insertAuthUsers(Long roleId, Long[] userIds) {
         // 新增用户与角色管理
-        List<SysUserRole> list = new ArrayList<SysUserRole>();
+		int rows = 1;
+		List<SysUserRole> list = new ArrayList<SysUserRole>();
         for (Long userId : userIds) {
             SysUserRole ur = new SysUserRole();
             ur.setUserId(userId);
             ur.setRoleId(roleId);
             list.add(ur);
         }
-        return userRoleMapper.insertAll(list);
+		if (list.size() > 0) {
+			rows = userRoleMapper.insertAll(list);
+		}
+        return rows;
     }
 }

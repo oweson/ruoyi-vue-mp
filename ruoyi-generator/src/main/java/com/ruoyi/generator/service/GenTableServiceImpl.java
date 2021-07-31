@@ -35,7 +35,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -47,7 +50,7 @@ import java.util.zip.ZipOutputStream;
  */
 @Slf4j
 @Service
-public class GenTableServiceImpl extends ServicePlusImpl<GenTableMapper, GenTable> implements IGenTableService {
+public class GenTableServiceImpl extends ServicePlusImpl<GenTableMapper, GenTable, GenTable> implements IGenTableService {
 
     @Autowired
     private GenTableColumnMapper genTableColumnMapper;
@@ -142,8 +145,7 @@ public class GenTableServiceImpl extends ServicePlusImpl<GenTableMapper, GenTabl
 							.set(StrUtil.isBlank(cenTableColumn.getIsList()), GenTableColumn::getIsList, null)
 							.set(StrUtil.isBlank(cenTableColumn.getIsQuery()), GenTableColumn::getIsQuery, null)
 							.set(StrUtil.isBlank(cenTableColumn.getIsRequired()), GenTableColumn::getIsRequired, null)
-							.set(StrUtil.isBlank(cenTableColumn.getQueryType()), GenTableColumn::getQueryType, null)
-							.set(StrUtil.isBlank(cenTableColumn.getDictType()), GenTableColumn::getDictType, null)
+							.set(StrUtil.isBlank(cenTableColumn.getDictType()), GenTableColumn::getDictType, "")
 							.eq(GenTableColumn::getColumnId,cenTableColumn.getColumnId()));
             }
         }
@@ -180,14 +182,10 @@ public class GenTableServiceImpl extends ServicePlusImpl<GenTableMapper, GenTabl
                 if (row > 0) {
                     // 保存列信息
                     List<GenTableColumn> genTableColumns = genTableColumnMapper.selectDbTableColumnsByName(tableName);
-					List<GenTableColumn> saveColumns = new ArrayList<>();
                     for (GenTableColumn column : genTableColumns) {
                         GenUtils.initColumnField(column, table);
-						saveColumns.add(column);
+						genTableColumnMapper.insert(column);
                     }
-                    if (CollUtil.isNotEmpty(saveColumns)) {
-						genTableColumnMapper.insertAll(saveColumns);
-					}
 				}
             }
         } catch (Exception e) {
@@ -291,16 +289,12 @@ public class GenTableServiceImpl extends ServicePlusImpl<GenTableMapper, GenTabl
         }
         List<String> dbTableColumnNames = dbTableColumns.stream().map(GenTableColumn::getColumnName).collect(Collectors.toList());
 
-		List<GenTableColumn> saveColumns = new ArrayList<>();
         dbTableColumns.forEach(column -> {
             if (!tableColumnNames.contains(column.getColumnName())) {
                 GenUtils.initColumnField(column, table);
-				saveColumns.add(column);
+				genTableColumnMapper.insert(column);
 			}
 		});
-		if (CollUtil.isNotEmpty(saveColumns)) {
-			genTableColumnMapper.insertAll(saveColumns);
-		}
 
         List<GenTableColumn> delColumns = tableColumns.stream().filter(column -> !dbTableColumnNames.contains(column.getColumnName())).collect(Collectors.toList());
         if (CollUtil.isNotEmpty(delColumns)) {

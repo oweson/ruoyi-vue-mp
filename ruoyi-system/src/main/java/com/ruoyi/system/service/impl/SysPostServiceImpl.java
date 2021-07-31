@@ -25,7 +25,7 @@ import java.util.List;
  * @author ruoyi
  */
 @Service
-public class SysPostServiceImpl extends ServicePlusImpl<SysPostMapper, SysPost> implements ISysPostService {
+public class SysPostServiceImpl extends ServicePlusImpl<SysPostMapper, SysPost, SysPost> implements ISysPostService {
 
     @Autowired
     private SysUserPostMapper userPostMapper;

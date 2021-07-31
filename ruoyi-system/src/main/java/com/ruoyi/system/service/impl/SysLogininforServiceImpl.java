@@ -22,7 +22,7 @@ import java.util.Map;
  * @author ruoyi
  */
 @Service
-public class SysLogininforServiceImpl extends ServicePlusImpl<SysLogininforMapper, SysLogininfor> implements ISysLogininforService {
+public class SysLogininforServiceImpl extends ServicePlusImpl<SysLogininforMapper, SysLogininfor, SysLogininfor> implements ISysLogininforService {
 
     @Override
     public TableDataInfo<SysLogininfor> selectPageLogininforList(SysLogininfor logininfor) {

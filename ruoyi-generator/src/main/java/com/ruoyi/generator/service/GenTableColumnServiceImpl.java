@@ -15,7 +15,7 @@ import java.util.List;
  * @author ruoyi
  */
 @Service
-public class GenTableColumnServiceImpl extends ServicePlusImpl<GenTableColumnMapper, GenTableColumn> implements IGenTableColumnService {
+public class GenTableColumnServiceImpl extends ServicePlusImpl<GenTableColumnMapper, GenTableColumn, GenTableColumn> implements IGenTableColumnService {
 
     /**
      * 查询业务字段列表

@@ -34,7 +34,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser> implements ISysUserService {
+public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, SysUser> implements ISysUserService {
 
     @Autowired
     private SysRoleMapper roleMapper;

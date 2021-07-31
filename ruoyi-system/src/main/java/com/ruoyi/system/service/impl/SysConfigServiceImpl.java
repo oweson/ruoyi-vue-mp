@@ -31,7 +31,7 @@ import java.util.Map;
  * @author ruoyi
  */
 @Service
-public class SysConfigServiceImpl extends ServicePlusImpl<SysConfigMapper, SysConfig> implements ISysConfigService {
+public class SysConfigServiceImpl extends ServicePlusImpl<SysConfigMapper, SysConfig, SysConfig> implements ISysConfigService {
 
 	@Autowired
 	private RedisCache redisCache;
@@ -98,6 +98,7 @@ public class SysConfigServiceImpl extends ServicePlusImpl<SysConfigMapper, SysCo
 	 *
 	 * @return true开启，false关闭
 	 */
+	@Override
 	public boolean selectCaptchaOnOff() {
 		String captchaOnOff = selectConfigByKey("sys.account.captchaOnOff");
 		if (StrUtil.isEmpty(captchaOnOff)) {

@@ -29,7 +29,7 @@ import java.util.List;
  * @author ruoyi
  */
 @Service
-public class SysJobServiceImpl extends ServicePlusImpl<SysJobMapper, SysJob> implements ISysJobService {
+public class SysJobServiceImpl extends ServicePlusImpl<SysJobMapper, SysJob, SysJob> implements ISysJobService {
     @Autowired
     private Scheduler scheduler;
 
