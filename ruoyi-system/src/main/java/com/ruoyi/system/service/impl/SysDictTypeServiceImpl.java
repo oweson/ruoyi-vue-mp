@@ -1,8 +1,7 @@
 package com.ruoyi.system.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Validator;
-import cn.hutool.core.util.StrUtil;
+import com.ruoyi.common.utils.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.ruoyi.common.constant.UserConstants;
@@ -48,13 +47,13 @@ public class SysDictTypeServiceImpl extends ServicePlusImpl<SysDictTypeMapper, S
 	public TableDataInfo<SysDictType> selectPageDictTypeList(SysDictType dictType) {
 		Map<String, Object> params = dictType.getParams();
 		LambdaQueryWrapper<SysDictType> lqw = new LambdaQueryWrapper<SysDictType>()
-			.like(StrUtil.isNotBlank(dictType.getDictName()), SysDictType::getDictName, dictType.getDictName())
-			.eq(StrUtil.isNotBlank(dictType.getStatus()), SysDictType::getStatus, dictType.getStatus())
-			.like(StrUtil.isNotBlank(dictType.getDictType()), SysDictType::getDictType, dictType.getDictType())
-			.apply(Validator.isNotEmpty(params.get("beginTime")),
+			.like(StringUtils.isNotBlank(dictType.getDictName()), SysDictType::getDictName, dictType.getDictName())
+			.eq(StringUtils.isNotBlank(dictType.getStatus()), SysDictType::getStatus, dictType.getStatus())
+			.like(StringUtils.isNotBlank(dictType.getDictType()), SysDictType::getDictType, dictType.getDictType())
+			.apply(StringUtils.isNotEmpty(params.get("beginTime")),
 				"date_format(create_time,'%y%m%d') >= date_format({0},'%y%m%d')",
 				params.get("beginTime"))
-			.apply(Validator.isNotEmpty(params.get("endTime")),
+			.apply(StringUtils.isNotEmpty(params.get("endTime")),
 				"date_format(create_time,'%y%m%d') <= date_format({0},'%y%m%d')",
 				params.get("endTime"));
 		return PageUtils.buildDataInfo(page(PageUtils.buildPage(), lqw));
@@ -70,13 +69,13 @@ public class SysDictTypeServiceImpl extends ServicePlusImpl<SysDictTypeMapper, S
 	public List<SysDictType> selectDictTypeList(SysDictType dictType) {
 		Map<String, Object> params = dictType.getParams();
 		return list(new LambdaQueryWrapper<SysDictType>()
-			.like(StrUtil.isNotBlank(dictType.getDictName()), SysDictType::getDictName, dictType.getDictName())
-			.eq(StrUtil.isNotBlank(dictType.getStatus()), SysDictType::getStatus, dictType.getStatus())
-			.like(StrUtil.isNotBlank(dictType.getDictType()), SysDictType::getDictType, dictType.getDictType())
-			.apply(Validator.isNotEmpty(params.get("beginTime")),
+			.like(StringUtils.isNotBlank(dictType.getDictName()), SysDictType::getDictName, dictType.getDictName())
+			.eq(StringUtils.isNotBlank(dictType.getStatus()), SysDictType::getStatus, dictType.getStatus())
+			.like(StringUtils.isNotBlank(dictType.getDictType()), SysDictType::getDictType, dictType.getDictType())
+			.apply(StringUtils.isNotEmpty(params.get("beginTime")),
 				"date_format(create_time,'%y%m%d') >= date_format({0},'%y%m%d')",
 				params.get("beginTime"))
-			.apply(Validator.isNotEmpty(params.get("endTime")),
+			.apply(StringUtils.isNotEmpty(params.get("endTime")),
 				"date_format(create_time,'%y%m%d') <= date_format({0},'%y%m%d')",
 				params.get("endTime")));
 	}
@@ -225,11 +224,11 @@ public class SysDictTypeServiceImpl extends ServicePlusImpl<SysDictTypeMapper, S
 	 */
 	@Override
 	public String checkDictTypeUnique(SysDictType dict) {
-		Long dictId = Validator.isNull(dict.getDictId()) ? -1L : dict.getDictId();
+		Long dictId = StringUtils.isNull(dict.getDictId()) ? -1L : dict.getDictId();
 		SysDictType dictType = getOne(new LambdaQueryWrapper<SysDictType>()
 			.eq(SysDictType::getDictType, dict.getDictType())
 			.last("limit 1"));
-		if (Validator.isNotNull(dictType) && dictType.getDictId().longValue() != dictId.longValue()) {
+		if (StringUtils.isNotNull(dictType) && dictType.getDictId().longValue() != dictId.longValue()) {
 			return UserConstants.NOT_UNIQUE;
 		}
 		return UserConstants.UNIQUE;

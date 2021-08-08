@@ -1,6 +1,5 @@
 package com.ruoyi.system.service.impl;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ruoyi.common.core.mybatisplus.core.ServicePlusImpl;
@@ -8,14 +7,15 @@ import com.ruoyi.common.core.page.PagePlus;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.exception.CustomException;
 import com.ruoyi.common.utils.PageUtils;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.oss.entity.UploadResult;
 import com.ruoyi.oss.factory.OssFactory;
 import com.ruoyi.oss.service.ICloudStorageService;
-import com.ruoyi.system.domain.bo.SysOssBo;
 import com.ruoyi.system.domain.SysOss;
+import com.ruoyi.system.domain.bo.SysOssBo;
+import com.ruoyi.system.domain.vo.SysOssVo;
 import com.ruoyi.system.mapper.SysOssMapper;
 import com.ruoyi.system.service.ISysOssService;
-import com.ruoyi.system.domain.vo.SysOssVo;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,21 +41,21 @@ public class SysOssServiceImpl extends ServicePlusImpl<SysOssMapper, SysOss, Sys
 	private LambdaQueryWrapper<SysOss> buildQueryWrapper(SysOssBo bo) {
 		Map<String, Object> params = bo.getParams();
 		LambdaQueryWrapper<SysOss> lqw = Wrappers.lambdaQuery();
-		lqw.like(StrUtil.isNotBlank(bo.getFileName()), SysOss::getFileName, bo.getFileName());
-		lqw.like(StrUtil.isNotBlank(bo.getOriginalName()), SysOss::getOriginalName, bo.getOriginalName());
-		lqw.eq(StrUtil.isNotBlank(bo.getFileSuffix()), SysOss::getFileSuffix, bo.getFileSuffix());
-		lqw.eq(StrUtil.isNotBlank(bo.getUrl()), SysOss::getUrl, bo.getUrl());
+		lqw.like(StringUtils.isNotBlank(bo.getFileName()), SysOss::getFileName, bo.getFileName());
+		lqw.like(StringUtils.isNotBlank(bo.getOriginalName()), SysOss::getOriginalName, bo.getOriginalName());
+		lqw.eq(StringUtils.isNotBlank(bo.getFileSuffix()), SysOss::getFileSuffix, bo.getFileSuffix());
+		lqw.eq(StringUtils.isNotBlank(bo.getUrl()), SysOss::getUrl, bo.getUrl());
 		lqw.between(params.get("beginCreateTime") != null && params.get("endCreateTime") != null,
 			SysOss::getCreateTime, params.get("beginCreateTime"), params.get("endCreateTime"));
-		lqw.eq(StrUtil.isNotBlank(bo.getCreateBy()), SysOss::getCreateBy, bo.getCreateBy());
-		lqw.eq(StrUtil.isNotBlank(bo.getService()), SysOss::getService, bo.getService());
+		lqw.eq(StringUtils.isNotBlank(bo.getCreateBy()), SysOss::getCreateBy, bo.getCreateBy());
+		lqw.eq(StringUtils.isNotBlank(bo.getService()), SysOss::getService, bo.getService());
 		return lqw;
 	}
 
 	@Override
 	public SysOss upload(MultipartFile file) {
 		String originalfileName = file.getOriginalFilename();
-		String suffix = StrUtil.sub(originalfileName, originalfileName.lastIndexOf("."), originalfileName.length());
+		String suffix = StringUtils.substring(originalfileName, originalfileName.lastIndexOf("."), originalfileName.length());
 		ICloudStorageService storage = OssFactory.instance();
 		UploadResult uploadResult;
 		try {

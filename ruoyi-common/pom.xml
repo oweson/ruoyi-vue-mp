@@ -59,6 +59,11 @@
             <artifactId>poi-ooxml</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+        </dependency>
+
         <!-- yml解析器 -->
         <dependency>
             <groupId>org.yaml</groupId>
@@ -146,6 +151,11 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+        </dependency>
+        <!-- sql性能分析插件 -->
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
         </dependency>
 
         <dependency>

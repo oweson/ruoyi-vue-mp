@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -39,11 +40,10 @@ public class SysDictTypeController extends BaseController
     @Log(title = "字典类型", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:dict:export')")
     @GetMapping("/export")
-    public AjaxResult export(SysDictType dictType)
+    public void export(SysDictType dictType, HttpServletResponse response)
     {
         List<SysDictType> list = dictTypeService.selectDictTypeList(dictType);
-        ExcelUtil<SysDictType> util = new ExcelUtil<SysDictType>(SysDictType.class);
-        return util.exportExcel(list, "字典类型");
+		ExcelUtil.exportExcel(list, "字典类型", SysDictType.class, response);
     }
 
     /**
