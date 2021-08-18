@@ -5,12 +5,12 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ruoyi.common.core.mybatisplus.core.ServicePlusImpl;
 import com.ruoyi.common.core.page.PagePlus;
 import com.ruoyi.common.core.page.TableDataInfo;
-import com.ruoyi.common.exception.CustomException;
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.PageUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.oss.entity.UploadResult;
 import com.ruoyi.oss.factory.OssFactory;
-import com.ruoyi.oss.service.ICloudStorageService;
+import com.ruoyi.oss.service.ICloudStorageStrategy;
 import com.ruoyi.system.domain.SysOss;
 import com.ruoyi.system.domain.bo.SysOssBo;
 import com.ruoyi.system.domain.vo.SysOssVo;
@@ -56,12 +56,12 @@ public class SysOssServiceImpl extends ServicePlusImpl<SysOssMapper, SysOss, Sys
 	public SysOss upload(MultipartFile file) {
 		String originalfileName = file.getOriginalFilename();
 		String suffix = StringUtils.substring(originalfileName, originalfileName.lastIndexOf("."), originalfileName.length());
-		ICloudStorageService storage = OssFactory.instance();
+		ICloudStorageStrategy storage = OssFactory.instance();
 		UploadResult uploadResult;
 		try {
 			uploadResult = storage.uploadSuffix(file.getBytes(), suffix, file.getContentType());
 		} catch (IOException e) {
-			throw new CustomException("文件读取异常!!!", e);
+			throw new ServiceException(e.getMessage());
 		}
 		// 保存文件信息
 		SysOss oss = new SysOss()
@@ -81,7 +81,7 @@ public class SysOssServiceImpl extends ServicePlusImpl<SysOssMapper, SysOss, Sys
 		}
 		List<SysOss> list = listByIds(ids);
 		for (SysOss sysOss : list) {
-			ICloudStorageService storage = OssFactory.instance(sysOss.getService());
+			ICloudStorageStrategy storage = OssFactory.instance(sysOss.getService());
 			storage.delete(sysOss.getUrl());
 		}
 		return removeByIds(ids);

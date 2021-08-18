@@ -75,6 +75,11 @@ public class Constants
     public static final String REPEAT_SUBMIT_KEY = "repeat_submit:";
 
     /**
+     * 限流 redis key
+     */
+    public static final String RATE_LIMIT_KEY = "rate_limit:";
+
+    /**
      * 验证码有效期（分钟）
      */
     public static final Integer CAPTCHA_EXPIRATION = 2;
@@ -129,18 +134,9 @@ public class Constants
      */
     public static final String SYS_DICT_KEY = "sys_dict:";
 
-    /**
-     * 资源映射路径 前缀
-     */
-    public static final String RESOURCE_PREFIX = "/profile";
-
 	/**
 	 * RMI 远程方法调用
 	 */
 	public static final String LOOKUP_RMI = "rmi://";
 
-	/**
-	 * 资源映射路径 前缀
-	 */
-	public static final String REDIS_LOCK_KEY = "redis_lock:";
 }
