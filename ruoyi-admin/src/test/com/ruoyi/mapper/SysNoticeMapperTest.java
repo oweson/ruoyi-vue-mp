@@ -1,4 +1,5 @@
 package com.ruoyi.mapper;
+
 import java.util.*;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -27,23 +28,24 @@ import static java.util.Arrays.asList;
  */
 
 
-public class SysNoticeMapperTest extends  App{
-    @Autowired
-    RedisCache redisCache;
+public class SysNoticeMapperTest extends App {
+	@Autowired
+	RedisCache redisCache;
 
-    @Autowired
-    RedisTemplate<String,String> redisTemplate;
+	@Autowired
+	RedisTemplate<String, String> redisTemplate;
 
-    @Autowired
-    SysNoticeMapper sysNoticeMapper;
+	@Autowired
+	SysNoticeMapper sysNoticeMapper;
 
 
-    @Test
-	public void wrapperpageTest(){
+	@Test
+	public void wrapperpageTest() {
 		Page<SysNoticeDTO> page = new Page<SysNoticeDTO>(0, 2);
 		QueryWrapper<SysNoticeDTO> queryWrapper = new QueryWrapper<>();
-		queryWrapper.eq("s.notice_type",1);
-		queryWrapper.like("s.notice_title","时间");
+		queryWrapper.eq("s.notice_type", 1);
+		queryWrapper.like("s.notice_title", "时间");
+		queryWrapper.eq("n.notice_title", "起风了");
 		Page<SysNoticeDTO> noticePage = sysNoticeMapper.getNoticePage(page, queryWrapper);
 		System.out.println(noticePage);
 	}
@@ -52,40 +54,39 @@ public class SysNoticeMapperTest extends  App{
 	 * 1 lambda测试
 	 */
 	@Test
-    public void list(){
+	public void list() {
 		QueryWrapper<SysNotice> sysNoticeQueryWrapper = new QueryWrapper<>();
 		LambdaQueryWrapper<SysNotice> lambda = sysNoticeQueryWrapper.lambda();
-		lambda.in(true,SysNotice::getNoticeId, Arrays.asList(1,2));
+		lambda.in(true, SysNotice::getNoticeId, Arrays.asList(1, 2));
 		List<SysNotice> sysNotices = sysNoticeMapper.selectList(sysNoticeQueryWrapper);
-        System.out.println(sysNotices);
-    }
+		System.out.println(sysNotices);
+	}
 
 	/**
-	 *  2 queryWrapper测试
+	 * 2 queryWrapper测试
 	 */
 	@Test
-    public void listWrapper(){
-        SysNotice sysNotice = new SysNotice();
-        sysNotice.setNoticeId(1L);
-        QueryWrapper<SysNotice> sysNoticeQueryWrapper = new QueryWrapper<>();
-        //sysNoticeQueryWrapper.eq(sysNotice.getNoticeId()!=null, "notice_id",sysNotice.getNoticeId());
-        sysNoticeQueryWrapper.in("notice_id", Lists.newArrayList(1,2));
-        sysNoticeQueryWrapper.like("notice_title","维护");
-        List<SysNotice> sysNotices = sysNoticeMapper.selectList(sysNoticeQueryWrapper);
-        System.out.println(sysNotices);
-    }
-
+	public void listWrapper() {
+		SysNotice sysNotice = new SysNotice();
+		sysNotice.setNoticeId(1L);
+		QueryWrapper<SysNotice> sysNoticeQueryWrapper = new QueryWrapper<>();
+		//sysNoticeQueryWrapper.eq(sysNotice.getNoticeId()!=null, "notice_id",sysNotice.getNoticeId());
+		sysNoticeQueryWrapper.in("notice_id", Lists.newArrayList(1, 2));
+		sysNoticeQueryWrapper.like("notice_title", "维护");
+		List<SysNotice> sysNotices = sysNoticeMapper.selectList(sysNoticeQueryWrapper);
+		System.out.println(sysNotices);
+	}
 
 
 	/**
-	 *  3 lambda原生的测试
+	 * 3 lambda原生的测试
 	 */
 	@Test
-	public void listLambdaWrapper(){
+	public void listLambdaWrapper() {
 		SysNotice sysNotice = new SysNotice();
 		sysNotice.setNoticeId(1L);
 		LambdaQueryWrapper<SysNotice> sysNoticeLambdaQueryWrapper = new LambdaQueryWrapper<>();
-		sysNoticeLambdaQueryWrapper.eq(sysNotice.getNoticeId()!=null,SysNotice::getNoticeId,sysNotice.getNoticeId());
+		sysNoticeLambdaQueryWrapper.eq(sysNotice.getNoticeId() != null, SysNotice::getNoticeId, sysNotice.getNoticeId());
 		List<SysNotice> sysNotices = sysNoticeMapper.selectList(sysNoticeLambdaQueryWrapper);
 		System.out.println(sysNotices);
 
@@ -95,7 +96,7 @@ public class SysNoticeMapperTest extends  App{
 	 * 4 保存测试
 	 */
 	@Test
-	public void save(){
+	public void save() {
 		SysNotice sysNotice = new SysNotice();
 		//sysNotice.setNoticeId(3L);
 		sysNotice.setNoticeTitle("跑路只是时间问题");
@@ -118,9 +119,9 @@ public class SysNoticeMapperTest extends  App{
 	 */
 
 	@Test
-	public void deleteTest(){
+	public void deleteTest() {
 		LambdaQueryWrapper<SysNotice> sysNoticeLambdaQueryWrapper = new LambdaQueryWrapper<>();
-		sysNoticeLambdaQueryWrapper.eq(SysNotice::getNoticeTitle,"hi");
+		sysNoticeLambdaQueryWrapper.eq(SysNotice::getNoticeTitle, "hi");
 		sysNoticeMapper.delete(sysNoticeLambdaQueryWrapper);
 		// 2 批量删除
 		sysNoticeMapper.deleteBatchIds(Lists.newArrayList(asList(1, 2, 3)));
@@ -132,10 +133,10 @@ public class SysNoticeMapperTest extends  App{
 	 */
 
 	@Test
-	public void likeTest(){
+	public void likeTest() {
 		LambdaQueryWrapper<SysNotice> sysNoticeLambdaQueryWrapper = new LambdaQueryWrapper<>();
 		//温馨%
-		sysNoticeLambdaQueryWrapper.likeRight(SysNotice::getNoticeTitle,"温馨");
+		sysNoticeLambdaQueryWrapper.likeRight(SysNotice::getNoticeTitle, "温馨");
 		List<SysNotice> sysNotices = sysNoticeMapper.selectList(sysNoticeLambdaQueryWrapper);
 		System.out.println(sysNotices);
 	}
@@ -144,9 +145,9 @@ public class SysNoticeMapperTest extends  App{
 	 * 7 查询必要的字段
 	 */
 	@Test
-	public  void selectNeedField(){
+	public void selectNeedField() {
 		QueryWrapper<SysNotice> noticeQueryWrapper = new QueryWrapper<>();
-		noticeQueryWrapper.select("notice_type","notice_title");
+		noticeQueryWrapper.select("notice_type", "notice_title");
 		noticeQueryWrapper.last("limit 1");
 		List<SysNotice> sysNotices = sysNoticeMapper.selectList(noticeQueryWrapper);
 		System.out.println(sysNotices);
@@ -159,29 +160,30 @@ public class SysNoticeMapperTest extends  App{
 	 */
 
 	@Test
-	public void otherTest(){
+	public void otherTest() {
 		//  queryWrapper.and(wrapper -> wrapper.and(wrapper1 -> wrapper1.eq(DwSubjectDataInfoWw::getYear, year1).ge(DwSubjectDataInfoWw::getWeek, week1))
 		//                    .or(wrapper2 -> wrapper2.eq(DwSubjectDataInfoWw::getYear, year2).le(DwSubjectDataInfoWw::getWeek, week2)));
 		//        }
 		LambdaQueryWrapper<SysNotice> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-		lambdaQueryWrapper.eq(SysNotice::getNoticeType,100);
-		lambdaQueryWrapper.or(item->item.eq(SysNotice::getNoticeType,2));
+		lambdaQueryWrapper.eq(SysNotice::getNoticeType, 100);
+		lambdaQueryWrapper.or(item -> item.eq(SysNotice::getNoticeType, 2));
 		List<SysNotice> sysNotices = sysNoticeMapper.selectList(lambdaQueryWrapper);
 		System.out.println(sysNotices);
 	}
+
 	@Test
-	public void checkNotice(){
+	public void checkNotice() {
 		QueryWrapper<SysNotice> sysNoticeQueryWrapper = new QueryWrapper<>();
-		sysNoticeQueryWrapper.lambda().eq(SysNotice::getNoticeTitle,"跑路只是时间问题");
-		sysNoticeQueryWrapper.lambda().ne(SysNotice::getNoticeId,1L);
+		sysNoticeQueryWrapper.lambda().eq(SysNotice::getNoticeTitle, "跑路只是时间问题");
+		sysNoticeQueryWrapper.lambda().ne(SysNotice::getNoticeId, 1L);
 		List<SysNotice> sysNotices = sysNoticeMapper.selectList(sysNoticeQueryWrapper);
 		System.out.println(sysNotices);
 	}
 
 	@Test
-	public void redisTest(){
+	public void redisTest() {
 		Boolean aBoolean = redisTemplate.opsForValue().setIfAbsent("owesonEye", "准备跑路", 10, TimeUnit.MINUTES);
-		if(aBoolean){
+		if (aBoolean) {
 			System.out.println("lock ok!");
 		}
 	}

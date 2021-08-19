@@ -18,7 +18,8 @@
     </resultMap>
     <select id="getNoticePage" resultType="com.ruoyi.system.dto.SysNoticeDTO">
         select s.notice_id, s.notice_title
-        from sys_notice s ${ew.customSqlSegment}
+        from sys_notice s
+                 left join sys_notice_slave n on s.notice_id = n.notice_id ${ew.customSqlSegment}
     </select>
 
 
