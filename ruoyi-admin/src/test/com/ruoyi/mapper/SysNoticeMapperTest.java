@@ -1,6 +1,7 @@
 package com.ruoyi.mapper;
 import java.util.*;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Maps;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -8,6 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.common.collect.Lists;
 import com.ruoyi.common.core.redis.RedisCache;
 import com.ruoyi.system.domain.SysNotice;
+import com.ruoyi.system.dto.SysNoticeDTO;
 import com.ruoyi.system.mapper.SysNoticeMapper;
 import org.junit.Test;
 import org.junit.platform.commons.util.StringUtils;
@@ -34,6 +36,17 @@ public class SysNoticeMapperTest extends  App{
 
     @Autowired
     SysNoticeMapper sysNoticeMapper;
+
+
+    @Test
+	public void wrapperpageTest(){
+		Page<SysNoticeDTO> page = new Page<SysNoticeDTO>(0, 2);
+		QueryWrapper<SysNoticeDTO> queryWrapper = new QueryWrapper<>();
+		queryWrapper.eq("s.notice_type",1);
+		queryWrapper.like("s.notice_title","时间");
+		Page<SysNoticeDTO> noticePage = sysNoticeMapper.getNoticePage(page, queryWrapper);
+		System.out.println(noticePage);
+	}
 
 	/**
 	 * 1 lambda测试

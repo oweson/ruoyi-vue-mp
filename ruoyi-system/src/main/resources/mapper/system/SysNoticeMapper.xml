@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.SysNoticeMapper">
 
     <resultMap type="SysNotice" id="SysNoticeResult">
@@ -16,5 +16,10 @@
         <result property="updateTime" column="update_time"/>
         <result property="remark" column="remark"/>
     </resultMap>
+    <select id="getNoticePage" resultType="com.ruoyi.system.dto.SysNoticeDTO">
+        select s.notice_id, s.notice_title
+        from sys_notice s ${ew.customSqlSegment}
+    </select>
+
 
 </mapper>
