@@ -6,6 +6,8 @@ import com.ruoyi.common.utils.file.FileUtils;
 import org.apache.commons.compress.utils.Lists;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author oweson
@@ -15,6 +17,8 @@ import java.util.ArrayList;
 
 public class UtilTest {
 	public static void main(String[] args) throws InterruptedException {
+		List emptyList = Collections.EMPTY_LIST;
+
 		ArrayList<Object> objects = Lists.newArrayList();
 		Object o = new Object();
 		o.wait();

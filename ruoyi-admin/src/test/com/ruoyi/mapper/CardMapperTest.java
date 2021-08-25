@@ -1,10 +1,12 @@
 package com.ruoyi.mapper;
 import java.util.Date;
 
+import com.ruoyi.common.tmp.UserDto;
 import com.ruoyi.system.domain.Card;
 import com.ruoyi.system.mapper.CardMapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 
 /**
  * @author oweson
@@ -15,6 +17,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CardMapperTest extends  App {
     @Autowired
     CardMapper cardMapper;
+    @Autowired
+	ApplicationEventPublisher applicationEventPublisher;
+
+    @Test
+	public void eventTest(){
+		UserDto userDto = new UserDto();
+		userDto.setName("tom");
+		userDto.setSex("1");
+
+		applicationEventPublisher.publishEvent(userDto);
+	}
     @Test
     public void insert(){
         Card card = new Card();
