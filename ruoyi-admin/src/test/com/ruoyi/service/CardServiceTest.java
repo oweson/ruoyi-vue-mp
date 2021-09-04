@@ -1,4 +1,5 @@
 package com.ruoyi.service;
+import java.util.Date;
 
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
@@ -43,4 +44,11 @@ public class CardServiceTest extends App {
         System.out.println(list);
         // todo
     }
+    @Test
+	public void test2(){
+		Card card = new Card();
+		card.setCode("123");
+		List<Card> list = iCardServiceImpl.list(iCardServiceImpl.getWrappers(card));
+		System.out.println(list);
+	}
 }

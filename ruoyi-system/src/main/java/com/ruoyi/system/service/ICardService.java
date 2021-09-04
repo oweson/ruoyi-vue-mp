@@ -1,5 +1,6 @@
 package com.ruoyi.system.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.system.domain.Card;
 
@@ -10,4 +11,5 @@ import com.ruoyi.system.domain.Card;
 
 
 public interface ICardService extends IService<Card> {
+	public QueryWrapper<Card> getWrappers(Card card);
 }
