@@ -15,8 +15,12 @@ import com.ruoyi.system.domain.Card;
 
 
 public class MapTest {
+    Boolean b = new Boolean(false);
+    Integer integer;
+    boolean aBoolean;
 	public static void main(String[] args) {
-		Card card1 = new Card();
+        MapTest mapTest = new MapTest();
+        Card card1 = new Card();
 		card1.setId(0);
 		card1.setCode("" + 0);
 		card1.setCreateTime(new Date());
@@ -37,5 +41,10 @@ public class MapTest {
 		}
 		Map<String, Card> stringCardMap = cards.stream().collect(Collectors.toMap(x -> x.getCode(), x -> x, (a, b) -> b));
 		System.out.println(stringCardMap);
-	}
+
+
+        System.out.println(mapTest.b.equals(Boolean.TRUE));
+        System.out.println(mapTest.aBoolean);
+        System.out.println(mapTest.integer);
+    }
 }

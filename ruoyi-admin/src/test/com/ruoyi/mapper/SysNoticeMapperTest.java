@@ -1,22 +1,21 @@
 package com.ruoyi.mapper;
 
-import java.util.*;
-
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.common.collect.Maps;
-
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
-import com.ruoyi.common.core.redis.RedisCache;
+import com.google.common.collect.Maps;
 import com.ruoyi.system.domain.SysNotice;
 import com.ruoyi.system.dto.SysNoticeDTO;
 import com.ruoyi.system.mapper.SysNoticeMapper;
 import org.junit.Test;
-import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -29,8 +28,7 @@ import static java.util.Arrays.asList;
 
 
 public class SysNoticeMapperTest extends App {
-	@Autowired
-	RedisCache redisCache;
+
 
 	@Autowired
 	RedisTemplate<String, String> redisTemplate;

@@ -2,7 +2,7 @@ package com.ruoyi.other;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
-import com.ruoyi.common.utils.file.FileUtils;
+import com.google.common.base.Joiner;
 import org.apache.commons.compress.utils.Lists;
 
 import java.util.ArrayList;
@@ -20,12 +20,16 @@ public class UtilTest {
 		List emptyList = Collections.EMPTY_LIST;
 
 		ArrayList<Object> objects = Lists.newArrayList();
-		Object o = new Object();
+		/*Object o = new Object();
 		o.wait();
-		o.notify();
+		o.notify();*/
 		DateUtil.date();
 		String normDatetimeMinutePattern = DatePattern.NORM_DATETIME_MINUTE_PATTERN;
 		System.out.println(normDatetimeMinutePattern);
 
-	}
+		//             return Result.fail(String.format("找不到销售合同编号为:【%s】的信息", Joiner.on(",").join(queryParam.getCodeSet())));
+        String format = String.format("找不到数据为【%s】的信息", Joiner.on(",").join(com.google.common.collect.Lists.newArrayList(1, 2, 3)));
+        System.out.println(format);
+
+    }
 }
