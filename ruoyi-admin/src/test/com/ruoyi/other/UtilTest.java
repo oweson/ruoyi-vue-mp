@@ -7,6 +7,7 @@ import org.apache.commons.compress.utils.Lists;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -17,7 +18,10 @@ import java.util.List;
 
 public class UtilTest {
 	public static void main(String[] args) throws InterruptedException {
-		List emptyList = Collections.EMPTY_LIST;
+
+        HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
+        objectObjectHashMap.put(1,1);
+        List emptyList = Collections.EMPTY_LIST;
 
 		ArrayList<Object> objects = Lists.newArrayList();
 		/*Object o = new Object();
