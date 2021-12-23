@@ -94,7 +94,6 @@
           plain
           icon="el-icon-download"
           size="mini"
-          :loading="exportLoading"
           @click="handleExport"
           v-hasPermi="['system:role:export']"
         >导出</el-button>
@@ -200,7 +199,7 @@
             ref="menu"
             node-key="id"
             :check-strictly="!form.menuCheckStrictly"
-            empty-text="加载中，请稍后"
+            empty-text="加载中，请稍候"
             :props="defaultProps"
           ></el-tree>
         </el-form-item>
@@ -245,7 +244,7 @@
             ref="dept"
             node-key="id"
             :check-strictly="!form.deptCheckStrictly"
-            empty-text="加载中，请稍后"
+            empty-text="加载中，请稍候"
             :props="defaultProps"
           ></el-tree>
         </el-form-item>
@@ -270,8 +269,6 @@ export default {
     return {
       // 遮罩层
       loading: true,
-      // 导出遮罩层
-      exportLoading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -358,8 +355,7 @@ export default {
     /** 查询角色列表 */
     getList() {
       this.loading = true;
-      listRole(this.addDateRange(this.queryParams, this.dateRange)).then(
-        response => {
+      listRole(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
           this.roleList = response.rows;
           this.total = response.total;
           this.loading = false;
@@ -613,7 +609,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.$download.excel('/system/role/export', this.queryParams);
+      this.download('system/role/export', {
+        ...this.queryParams
+      }, `role_${new Date().getTime()}.xlsx`)
     }
   }
 };

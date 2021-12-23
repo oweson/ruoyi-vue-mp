@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * 岗位信息 服务层处理
  *
- * @author ruoyi
+ * @author Lion Li
  */
 @Service
 public class SysPostServiceImpl extends ServicePlusImpl<SysPostMapper, SysPost, SysPost> implements ISysPostService {
@@ -35,7 +35,7 @@ public class SysPostServiceImpl extends ServicePlusImpl<SysPostMapper, SysPost, 
                 .like(StringUtils.isNotBlank(post.getPostCode()), SysPost::getPostCode, post.getPostCode())
                 .eq(StringUtils.isNotBlank(post.getStatus()), SysPost::getStatus, post.getStatus())
                 .like(StringUtils.isNotBlank(post.getPostName()), SysPost::getPostName, post.getPostName());
-        return PageUtils.buildDataInfo(page(PageUtils.buildPage(),lqw));
+        return PageUtils.buildDataInfo(page(PageUtils.buildPage(), lqw));
     }
 
     /**
@@ -93,9 +93,10 @@ public class SysPostServiceImpl extends ServicePlusImpl<SysPostMapper, SysPost, 
     @Override
     public String checkPostNameUnique(SysPost post) {
         Long postId = StringUtils.isNull(post.getPostId()) ? -1L : post.getPostId();
-        SysPost info = getOne(new LambdaQueryWrapper<SysPost>()
-                .eq(SysPost::getPostName, post.getPostName()).last("limit 1"));
-        if (StringUtils.isNotNull(info) && info.getPostId().longValue() != postId.longValue()) {
+        long count = count(new LambdaQueryWrapper<SysPost>()
+                .eq(SysPost::getPostName, post.getPostName())
+                .ne(SysPost::getPostId, postId));
+        if (count > 0) {
             return UserConstants.NOT_UNIQUE;
         }
         return UserConstants.UNIQUE;
@@ -110,9 +111,10 @@ public class SysPostServiceImpl extends ServicePlusImpl<SysPostMapper, SysPost, 
     @Override
     public String checkPostCodeUnique(SysPost post) {
         Long postId = StringUtils.isNull(post.getPostId()) ? -1L : post.getPostId();
-        SysPost info = getOne(new LambdaQueryWrapper<SysPost>()
-                .eq(SysPost::getPostCode, post.getPostCode()).last("limit 1"));
-        if (StringUtils.isNotNull(info) && info.getPostId().longValue() != postId.longValue()) {
+        long count = count(new LambdaQueryWrapper<SysPost>()
+                .eq(SysPost::getPostCode, post.getPostCode())
+                .ne(SysPost::getPostId, postId));
+        if (count > 0) {
             return UserConstants.NOT_UNIQUE;
         }
         return UserConstants.UNIQUE;
@@ -126,7 +128,7 @@ public class SysPostServiceImpl extends ServicePlusImpl<SysPostMapper, SysPost, 
      */
     @Override
     public long countUserPostById(Long postId) {
-        return userPostMapper.selectCount(new LambdaQueryWrapper<SysUserPost>().eq(SysUserPost::getPostId,postId));
+        return userPostMapper.selectCount(new LambdaQueryWrapper<SysUserPost>().eq(SysUserPost::getPostId, postId));
     }
 
     /**

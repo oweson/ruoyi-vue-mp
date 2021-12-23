@@ -8,6 +8,7 @@ import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.mybatisplus.core.ServicePlusImpl;
 import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.core.service.UserService;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.PageUtils;
 import com.ruoyi.common.utils.SecurityUtils;
@@ -31,11 +32,11 @@ import java.util.List;
 /**
  * 用户 业务层处理
  *
- * @author ruoyi
+ * @author Lion Li
  */
 @Slf4j
 @Service
-public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, SysUser> implements ISysUserService {
+public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, SysUser> implements ISysUserService, UserService {
 
     @Autowired
     private SysRoleMapper roleMapper;
@@ -79,7 +80,7 @@ public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, 
     @Override
     @DataScope(deptAlias = "d", userAlias = "u", isUser = true)
     public TableDataInfo<SysUser> selectAllocatedList(SysUser user) {
-		return PageUtils.buildDataInfo(baseMapper.selectAllocatedList(PageUtils.buildPage(), user));
+        return PageUtils.buildDataInfo(baseMapper.selectAllocatedList(PageUtils.buildPage(), user));
     }
 
     /**
@@ -91,7 +92,7 @@ public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, 
     @Override
     @DataScope(deptAlias = "d", userAlias = "u", isUser = true)
     public TableDataInfo<SysUser> selectUnallocatedList(SysUser user) {
-		return PageUtils.buildDataInfo(baseMapper.selectUnallocatedList(PageUtils.buildPage(), user));
+        return PageUtils.buildDataInfo(baseMapper.selectUnallocatedList(PageUtils.buildPage(), user));
     }
 
     /**
@@ -162,7 +163,7 @@ public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, 
      */
     @Override
     public String checkUserNameUnique(String userName) {
-        long count = count(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUserName, userName).last("limit 1"));
+        long count = count(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUserName, userName));
         if (count > 0) {
             return UserConstants.NOT_UNIQUE;
         }
@@ -170,7 +171,7 @@ public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, 
     }
 
     /**
-     * 校验用户名称是否唯一
+     * 校验手机号码是否唯一
      *
      * @param user 用户信息
      * @return
@@ -178,10 +179,10 @@ public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, 
     @Override
     public String checkPhoneUnique(SysUser user) {
         Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
-        SysUser info = getOne(new LambdaQueryWrapper<SysUser>()
-                .select(SysUser::getUserId, SysUser::getPhonenumber)
-                .eq(SysUser::getPhonenumber, user.getPhonenumber()).last("limit 1"));
-        if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue()) {
+        long count = count(new LambdaQueryWrapper<SysUser>()
+                .eq(SysUser::getPhonenumber, user.getPhonenumber())
+                .ne(SysUser::getUserId, userId));
+        if (count > 0) {
             return UserConstants.NOT_UNIQUE;
         }
         return UserConstants.UNIQUE;
@@ -196,10 +197,10 @@ public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, 
     @Override
     public String checkEmailUnique(SysUser user) {
         Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
-        SysUser info = getOne(new LambdaQueryWrapper<SysUser>()
-                .select(SysUser::getUserId, SysUser::getEmail)
-                .eq(SysUser::getEmail, user.getEmail()).last("limit 1"));
-        if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue()) {
+        long count = count(new LambdaQueryWrapper<SysUser>()
+                .eq(SysUser::getEmail, user.getEmail())
+                .ne(SysUser::getUserId, userId));
+        if (count > 0) {
             return UserConstants.NOT_UNIQUE;
         }
         return UserConstants.UNIQUE;
@@ -258,7 +259,7 @@ public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, 
      * @param user 用户信息
      * @return 结果
      */
-	@Override
+    @Override
     public boolean registerUser(SysUser user) {
         return baseMapper.insert(user) > 0;
     }
@@ -274,11 +275,11 @@ public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, 
     public int updateUser(SysUser user) {
         Long userId = user.getUserId();
         // 删除用户与角色关联
-        userRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId,userId));
+        userRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId, userId));
         // 新增用户与角色管理
         insertUserRole(user);
         // 删除用户与岗位关联
-        userPostMapper.delete(new LambdaQueryWrapper<SysUserPost>().eq(SysUserPost::getUserId,userId));
+        userPostMapper.delete(new LambdaQueryWrapper<SysUserPost>().eq(SysUserPost::getUserId, userId));
         // 新增用户与岗位管理
         insertUserPost(user);
         return baseMapper.updateById(user);
@@ -287,15 +288,14 @@ public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, 
     /**
      * 用户授权角色
      *
-     * @param userId 用户ID
+     * @param userId  用户ID
      * @param roleIds 角色组
      */
     @Override
     @Transactional
-    public void insertUserAuth(Long userId, Long[] roleIds)
-    {
+    public void insertUserAuth(Long userId, Long[] roleIds) {
         userRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>()
-			.eq(SysUserRole::getUserId, userId));
+                .eq(SysUserRole::getUserId, userId));
         insertUserRole(userId, roleIds);
     }
 
@@ -325,15 +325,15 @@ public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, 
      * 修改用户头像
      *
      * @param userName 用户名
-     * @param avatar 头像地址
+     * @param avatar   头像地址
      * @return 结果
      */
     @Override
     public boolean updateUserAvatar(String userName, String avatar) {
         return baseMapper.update(null,
                 new LambdaUpdateWrapper<SysUser>()
-                        .set(SysUser::getAvatar,avatar)
-                        .eq(SysUser::getUserName,userName)) > 0;
+                        .set(SysUser::getAvatar, avatar)
+                        .eq(SysUser::getUserName, userName)) > 0;
     }
 
     /**
@@ -358,8 +358,8 @@ public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, 
     public int resetUserPwd(String userName, String password) {
         return baseMapper.update(null,
                 new LambdaUpdateWrapper<SysUser>()
-                        .set(SysUser::getPassword,password)
-                        .eq(SysUser::getUserName,userName));
+                        .set(SysUser::getPassword, password)
+                        .eq(SysUser::getUserName, userName));
     }
 
     /**
@@ -379,7 +379,7 @@ public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, 
                 list.add(ur);
             }
             if (list.size() > 0) {
-				userRoleMapper.insertAll(list);
+                userRoleMapper.insertAll(list);
             }
         }
     }
@@ -401,7 +401,7 @@ public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, 
                 list.add(up);
             }
             if (list.size() > 0) {
-				userPostMapper.insertAll(list);
+                userPostMapper.insertAll(list);
             }
         }
     }
@@ -409,7 +409,7 @@ public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, 
     /**
      * 新增用户角色信息
      *
-     * @param userId 用户ID
+     * @param userId  用户ID
      * @param roleIds 角色组
      */
     public void insertUserRole(Long userId, Long[] roleIds) {
@@ -438,9 +438,9 @@ public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, 
     @Transactional
     public int deleteUserById(Long userId) {
         // 删除用户与角色关联
-        userRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId,userId));
+        userRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId, userId));
         // 删除用户与岗位表
-        userPostMapper.delete(new LambdaQueryWrapper<SysUserPost>().eq(SysUserPost::getUserId,userId));
+        userPostMapper.delete(new LambdaQueryWrapper<SysUserPost>().eq(SysUserPost::getUserId, userId));
         return baseMapper.deleteById(userId);
     }
 
@@ -458,18 +458,18 @@ public class SysUserServiceImpl extends ServicePlusImpl<SysUserMapper, SysUser, 
         }
         List<Long> ids = Arrays.asList(userIds);
         // 删除用户与角色关联
-        userRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>().in(SysUserRole::getUserId,ids));
+        userRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>().in(SysUserRole::getUserId, ids));
         // 删除用户与岗位表
-        userPostMapper.delete(new LambdaQueryWrapper<SysUserPost>().in(SysUserPost::getUserId,ids));
+        userPostMapper.delete(new LambdaQueryWrapper<SysUserPost>().in(SysUserPost::getUserId, ids));
         return baseMapper.deleteBatchIds(ids);
     }
 
     /**
      * 导入用户数据
      *
-     * @param userList 用户数据列表
+     * @param userList        用户数据列表
      * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
+     * @param operName        操作用户
      * @return 结果
      */
     @Override

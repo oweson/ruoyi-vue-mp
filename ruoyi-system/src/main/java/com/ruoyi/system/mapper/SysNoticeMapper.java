@@ -13,7 +13,7 @@ import org.apache.ibatis.annotations.Param;
 /**
  * 通知公告表 数据层
  *
- * @author ruoyi
+ * @author Lion Li
  */
 public interface SysNoticeMapper extends BaseMapperPlus<SysNotice> {
 	Page<SysNoticeDTO> getNoticePage(IPage<SysNoticeDTO> page, @Param(Constants.WRAPPER) QueryWrapper<SysNoticeDTO> wrapper);

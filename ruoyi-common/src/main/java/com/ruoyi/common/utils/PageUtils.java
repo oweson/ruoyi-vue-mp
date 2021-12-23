@@ -1,5 +1,6 @@
 package com.ruoyi.common.utils;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpStatus;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -48,6 +49,7 @@ public class PageUtils {
 
     /**
      * 构建 plus 分页对象
+     *
      * @param <T> domain 实体
      * @param <K> vo 实体
      * @return 分页对象
@@ -62,16 +64,19 @@ public class PageUtils {
         }
         PagePlus<T, K> page = new PagePlus<>(pageNum, pageSize);
         OrderItem orderItem = buildOrderItem(orderByColumn, isAsc);
-        page.addOrder(orderItem);
+        if (ObjectUtil.isNotNull(orderItem)) {
+            page.addOrder(orderItem);
+        }
         return page;
     }
 
-	public static <T> Page<T> buildPage() {
-		return buildPage(null, null);
-	}
+    public static <T> Page<T> buildPage() {
+        return buildPage(null, null);
+    }
 
     /**
      * 构建 MP 普通分页对象
+     *
      * @param <T> domain 实体
      * @return 分页对象
      */
@@ -85,7 +90,9 @@ public class PageUtils {
         }
         Page<T> page = new Page<>(pageNum, pageSize);
         OrderItem orderItem = buildOrderItem(orderByColumn, isAsc);
-        page.addOrder(orderItem);
+        if (ObjectUtil.isNotNull(orderItem)) {
+            page.addOrder(orderItem);
+        }
         return page;
     }
 
@@ -98,8 +105,8 @@ public class PageUtils {
         }
         if (StringUtils.isNotBlank(orderByColumn)) {
             String orderBy = SqlUtil.escapeOrderBySql(orderByColumn);
-			orderBy = StringUtils.toUnderScoreCase(orderBy);
-			if ("asc".equals(isAsc)) {
+            orderBy = StringUtils.toUnderScoreCase(orderBy);
+            if ("asc".equals(isAsc)) {
                 return OrderItem.asc(orderBy);
             } else if ("desc".equals(isAsc)) {
                 return OrderItem.desc(orderBy);
