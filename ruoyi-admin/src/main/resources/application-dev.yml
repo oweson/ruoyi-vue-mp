@@ -39,8 +39,6 @@ xxl:
 
 --- # 数据源配置
 spring:
-  autoconfigure:
-    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     # 动态数据源文档 https://www.kancloud.cn/tracy5546/dynamic-datasource/content
@@ -53,7 +51,7 @@ spring:
         # 主库数据源
         master:
           driverClassName: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://localhost:3307/ry-vue-plus?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&autoReconnect=true
+          url: jdbc:mysql://localhost:3306/ry-vue-plus?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&autoReconnect=true
           username: root
           password: 111111
         # 从库数据源
@@ -89,41 +87,7 @@ spring:
 --- # druid 配置
 spring:
   datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
     druid:
-      # 主库数据源
-      master:
-        url: jdbc:mysql://localhost:3307/ry_vue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&autoReconnect=true
-        username: root
-        password: 111111
-      # 从库数据源
-      slave:
-        # 从数据源开关/默认关闭
-        enabled: false
-        url:
-        username:
-        password:
-      # 初始连接数
-      initialSize: 5
-      # 最小连接池数量
-      minIdle: 10
-      # 最大连接池数量
-      maxActive: 20
-      # 配置获取连接等待超时的时间
-      maxWait: 60000
-      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
-      timeBetweenEvictionRunsMillis: 60000
-      # 配置一个连接在池中最小生存的时间，单位是毫秒
-      minEvictableIdleTimeMillis: 300000
-      # 配置一个连接在池中最大生存的时间，单位是毫秒
-      maxEvictableIdleTimeMillis: 900000
-      # 配置检测连接是否有效
-      validationQuery: SELECT 1 FROM DUAL
-      testWhileIdle: true
-      testOnBorrow: false
-      testOnReturn: false
-      # 注意这个值和druid原生不一致，默认启动了stat
-      filters: stat
       webStatFilter:
         enabled: true
       statViewServlet:
@@ -144,14 +108,16 @@ spring:
         wall:
           config:
             multi-statement-allow: true
-  # redis 配置
+
+--- # redis 单机配置(单机与集群只能开启一个另一个需要注释掉)
+spring:
   redis:
     # 地址
-    host: 127.0.0.1
+    host: localhost
     # 端口，默认为6379
     port: 6379
     # 数据库索引
-    database: 3
+    database: 0
     # 密码
     password:
     # 连接超时时间
@@ -159,7 +125,6 @@ spring:
     # 是否开启ssl
     ssl: false
 
---- # redisson 客户端配置
 redisson:
   # 线程池数量
   threads: 16

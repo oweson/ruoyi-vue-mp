@@ -1,6 +1,7 @@
 package com.ruoyi.ygptmp;
 
 import com.google.common.collect.Lists;
+import com.ruoyi.system.domain.Card;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -16,5 +17,7 @@ public class Demo1Test {
 		ArrayList<Integer> integers = Lists.newArrayList(1, 2, 3);
 		String collect = integers.stream().map(x -> x.toString()).collect(Collectors.joining(","));
 		System.out.println(collect);
-	}
+        Card card = new Card();
+        card.setCode("");
+    }
 }
