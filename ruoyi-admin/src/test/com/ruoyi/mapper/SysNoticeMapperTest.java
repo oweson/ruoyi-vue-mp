@@ -8,10 +8,12 @@ import com.google.common.collect.Maps;
 import com.ruoyi.system.domain.SysNotice;
 import com.ruoyi.system.dto.SysNoticeDTO;
 import com.ruoyi.system.mapper.SysNoticeMapper;
+import com.ruoyi.system.utils.QueryHelpPlus;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -33,8 +35,19 @@ public class SysNoticeMapperTest extends App {
 	@Autowired
 	RedisTemplate<String, String> redisTemplate;
 
-	@Autowired
+	@Resource
 	SysNoticeMapper sysNoticeMapper;
+
+
+	@Test
+    public void queryTest(){
+        SysNoticeDTO sysNoticeDTO = new SysNoticeDTO();
+        sysNoticeDTO.setNoticeId(1L);
+        sysNoticeDTO.setNoticeTitle("若依新版本发布啦");
+        QueryWrapper predicate = QueryHelpPlus.getPredicate(SysNotice.class, sysNoticeDTO);
+        List selectList = sysNoticeMapper.selectList(predicate);
+        System.out.println(selectList);
+    }
 
 
 	@Test
@@ -70,7 +83,8 @@ public class SysNoticeMapperTest extends App {
 		QueryWrapper<SysNotice> sysNoticeQueryWrapper = new QueryWrapper<>();
 		//sysNoticeQueryWrapper.eq(sysNotice.getNoticeId()!=null, "notice_id",sysNotice.getNoticeId());
 		sysNoticeQueryWrapper.in("notice_id", Lists.newArrayList(1, 2));
-		sysNoticeQueryWrapper.like("notice_title", "维护");
+		sysNoticeQueryWrapper.like("notice_title", "维护")
+            .select("notice_id","notice_title");
 		List<SysNotice> sysNotices = sysNoticeMapper.selectList(sysNoticeQueryWrapper);
 		System.out.println(sysNotices);
 	}

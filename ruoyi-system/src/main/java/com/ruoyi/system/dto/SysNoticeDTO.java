@@ -1,5 +1,6 @@
 package com.ruoyi.system.dto;
 
+import com.ruoyi.common.annotation.Query;
 import lombok.Data;
 
 /**
@@ -9,6 +10,8 @@ import lombok.Data;
 
 @Data
 public class SysNoticeDTO {
-	private Long noticeId;
-	private String noticeTitle;
+    @Query(type = Query.Type.EQUAL)
+    private Long noticeId;
+    @Query(type = Query.Type.INNER_LIKE)
+    private String noticeTitle;
 }
