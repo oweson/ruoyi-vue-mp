@@ -29,31 +29,31 @@ public interface TestDemoMapper extends BaseMapperPlus<TestDemo> {
     })
     Page<TestDemoVo> customPageList(@Param("page") Page<TestDemo> page, @Param("ew") Wrapper<TestDemo> wrapper);
 
-    @Override
-    @DataPermission({
-        @DataColumn(key = "deptName", value = "dept_id"),
-        @DataColumn(key = "userName", value = "user_id")
-    })
-    <P extends IPage<TestDemo>> P selectPage(P page, @Param(Constants.WRAPPER) Wrapper<TestDemo> queryWrapper);
-
-    @Override
-    @DataPermission({
-        @DataColumn(key = "deptName", value = "dept_id"),
-        @DataColumn(key = "userName", value = "user_id")
-    })
-    List<TestDemo> selectList(@Param(Constants.WRAPPER) Wrapper<TestDemo> queryWrapper);
-
-    @Override
-    @DataPermission({
-        @DataColumn(key = "deptName", value = "dept_id"),
-        @DataColumn(key = "userName", value = "user_id")
-    })
-    int updateById(@Param(Constants.ENTITY) TestDemo entity);
-
-    @Override
-    @DataPermission({
-        @DataColumn(key = "deptName", value = "dept_id"),
-        @DataColumn(key = "userName", value = "user_id")
-    })
-    int deleteBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
+//    @Override
+//    @DataPermission({
+//        @DataColumn(key = "deptName", value = "dept_id"),
+//        @DataColumn(key = "userName", value = "user_id")
+//    })
+//    <P extends IPage<TestDemo>> P selectPage(P page, @Param(Constants.WRAPPER) Wrapper<TestDemo> queryWrapper);
+//
+////    @Override
+////    @DataPermission({
+////        @DataColumn(key = "deptName", value = "dept_id"),
+////        @DataColumn(key = "userName", value = "user_id")
+////    })/*
+//    List<TestDemo> selectList(@Param(Constants.WRAPPER) Wrapper<TestDemo> queryWrapper);
+//
+//    @Override
+//    @DataPermission({
+//        @DataColumn(key = "deptName", value = "dept_id"),
+//        @DataColumn(key = "userName", value = "user_id")
+//    })
+//    int updateById(@Param(Constants.ENTITY) TestDemo entity);
+//
+//    @Override
+//    @DataPermission({
+//        @DataColumn(key = "deptName", value = "dept_id"),
+//        @DataColumn(key = "userName", value = "user_id")
+//    })
+//    int deleteBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);*/
 }
