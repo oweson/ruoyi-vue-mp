@@ -112,6 +112,31 @@ public class SysOssController extends BaseController {
         response.setContentLength(Convert.toInt(data));
     }
 
+    @ApiOperation("下载OSS对象存储")
+    @PreAuthorize("@ss.hasPermi('system:oss:download')")
+    @GetMapping("/download2/{ossId}")
+    public void download2(@ApiParam("OSS对象ID") @PathVariable Long ossId, HttpServletResponse response) throws IOException {
+        SysOss sysOss = iSysOssService.getById(ossId);
+        if (ObjectUtil.isNull(sysOss)) {
+            throw new ServiceException("文件数据不存在!");
+        }
+        response.reset();
+        FileUtils.setAttachmentResponseHeader(response, sysOss.getOriginalName());
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE + "; charset=UTF-8");
+        long data;
+        try {
+            data = HttpUtil.download(sysOss.getUrl(), response.getOutputStream(), false);
+        } catch (HttpException e) {
+            if (e.getMessage().contains("403")) {
+                throw new ServiceException("无读取权限, 请在对应的OSS开启'公有读'权限!");
+            } else {
+                throw new ServiceException(e.getMessage());
+            }
+        }
+        response.setContentLength(Convert.toInt(data));
+    }
+
+
     /**
      * 删除OSS对象存储
      */
